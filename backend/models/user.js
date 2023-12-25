@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
 const db = require("../config/db");
+const UserTypeModel = require("./user_type")
 
 const UsersModel = db.define("users", {
     id: {
@@ -23,8 +24,18 @@ const UsersModel = db.define("users", {
     photo: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    user_type_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: UserTypeModel,
+            key: 'id'
+        }
     }
 });
 
+
+UsersModel.belongsTo(UserTypeModel, {foreignKey: "user_type_id"});
 
 module.exports = UsersModel;
