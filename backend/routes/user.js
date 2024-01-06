@@ -1,8 +1,10 @@
 const express = require('express');
-const createTypeUser = require('../controllers/user');
-const getUsersType = require('../controllers/user');
-const createUser = require('../controllers/user');
-const getUsers = require("../controllers/user");
+const {
+    createTypeUser,
+    getUsersType,
+    createUser,
+    getUsers
+} = require('../controllers/user');
 const multer = require('multer');
 const path = require('path');
 
@@ -20,13 +22,15 @@ const upload = multer({ storage: storage });
 
 const userRoutes = express.Router();
 
+userRoutes.get('/getUsersType', getUsersType);
+
+userRoutes.get('/getUsers', getUsers)
+
 userRoutes.post('/createUser', upload.single('image'), createUser)
 
 userRoutes.post('/createUserType', createTypeUser);
 
-userRoutes.get('/getUsersType', getUsersType);
 
-userRoutes.get('/getUsers', getUsers);
 
 
 module.exports = userRoutes;

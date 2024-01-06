@@ -29,6 +29,7 @@ const createTypeUser = async (req, res) => {
     }
 };
 
+
 const getUsersType = async (req,res) => {
     try{
         const userType = await UsersTypeModel.findAll();
@@ -38,6 +39,7 @@ const getUsersType = async (req,res) => {
         return res.status(500).json({ message: "Erro ao pesquisar pelos tipos de usuários"})
     }
 };
+
 
 const createUser = async(req,res) => {
     const {name, email, password} = req.body
@@ -80,6 +82,7 @@ const createUser = async(req,res) => {
     
 }
 
+
 const getUsers = async(req,res) => {
     try{
         const users = await UsersModel.findAll()
@@ -91,8 +94,10 @@ const getUsers = async(req,res) => {
 }
 
 
-module.exports = createTypeUser;
-module.exports = getUsersType;
-module.exports = createUser;
-module.exports = getUsers;
+module.exports = {
+    createTypeUser,
+    getUsersType,
+    createUser,
+    getUsers
+};
 
