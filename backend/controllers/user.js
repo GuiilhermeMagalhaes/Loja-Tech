@@ -1,6 +1,9 @@
 const UsersModel = require('../models/user');
 const UsersTypeModel = require('../models/user_type');
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
+
+
 
 
 const createTypeUser = async (req, res) => {
@@ -29,7 +32,6 @@ const createTypeUser = async (req, res) => {
     }
 };
 
-
 const getUsersType = async (req,res) => {
     try{
         const userType = await UsersTypeModel.findAll();
@@ -39,7 +41,6 @@ const getUsersType = async (req,res) => {
         return res.status(500).json({ message: "Erro ao pesquisar pelos tipos de usuários"})
     }
 };
-
 
 const createUser = async(req,res) => {
     const {name, email, password} = req.body
@@ -82,7 +83,6 @@ const createUser = async(req,res) => {
     
 }
 
-
 const getUsers = async(req,res) => {
     try{
         const users = await UsersModel.findAll()
@@ -93,11 +93,40 @@ const getUsers = async(req,res) => {
     }
 }
 
+const login = async(req,res) => {
+    try{
+        const {email, password} = req.body;
+
+        if(!email || !password){
+            return  res.status(401).json({message: "Preencha todos os campos"});
+        }
+
+        const emailMatch = await UsersModel.findOne({ where: {email} });
+        if(!emailMatch){
+            return res.status(401).json({message: "Email errado"})
+        }
+
+        const passwordMatch = await bcrypt.compare(password, emailMatch.password)
+        if(!passwordMatch){
+            return res.status(401).json({ message: "Password errada"});
+        }
+
+        const jwtToken = jwt.sign({ userId: emailMatch.id }, process.env.SECRET_KEY, { expiresIn: '1h' });
+        return res.status(200).json({token: jwtToken});
+
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({message: "Erro ao fazer login"});
+    }
+
+}
+
 
 module.exports = {
     createTypeUser,
     getUsersType,
     createUser,
-    getUsers
+    getUsers,
+    login
 };
 

@@ -5,6 +5,8 @@ const UserTypeModel = require("./models/user_type");
 const userRoutes = require('./routes/user');
 const router = require('./routes/index');
 
+require('dotenv').config();
+
 const app = express();
 const port = 5500;
 

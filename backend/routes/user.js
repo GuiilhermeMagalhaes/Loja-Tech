@@ -3,7 +3,8 @@ const {
     createTypeUser,
     getUsersType,
     createUser,
-    getUsers
+    getUsers,
+    login
 } = require('../controllers/user');
 const multer = require('multer');
 const path = require('path');
@@ -24,11 +25,13 @@ const userRoutes = express.Router();
 
 userRoutes.get('/getUsersType', getUsersType);
 
-userRoutes.get('/getUsers', getUsers)
+userRoutes.get('/getUsers', getUsers) 
 
 userRoutes.post('/createUser', upload.single('image'), createUser)
 
 userRoutes.post('/createUserType', createTypeUser);
+
+userRoutes.post('/login', login);
 
 
 
